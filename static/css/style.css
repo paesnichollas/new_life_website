@@ -1023,3 +1023,31 @@ body.dark-mode .list-group-item.active {
     color: var(--text-primary) !important;
     border-color: var(--border-color) var(--border-color) transparent;
 }
+
+/* ===== Estilo dinâmico para o aviso de ID ===== */
+
+.alert-id-aviso {
+    border: 1px solid var(--warning-color);
+    background-color: #fff3cd; 
+    color: #2c2c2c;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* sombra sutil */
+    border-radius: 0.5rem;
+}
+
+.alert-id-aviso .highlight {
+    font-weight: bold;
+    color: #111;
+}
+
+body.dark-mode .alert-id-aviso {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+body.dark-mode .alert-id-aviso .highlight {
+    color: #fff;
+}
+
+
