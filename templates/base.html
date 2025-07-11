@@ -1,0 +1,147 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}New Life - Saúde e Bem-estar{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" href="{% static 'img/banner/icone.png' %}" type="image">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'produtos:home' %}" style="color: #1f628e;">
+                <img src="{% static 'img/banner/icone.png' %}" alt="Logo" width="45" height="45" class="me-2">
+                New Life
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'produtos:home' %}">Início</a>
+                    </li>
+                    {% comment %} <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Produtos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'produtos:produtos_categoria' 'esportes' %}">Esportes</a></li>
+                            <li><a class="dropdown-item" href="{% url 'produtos:produtos_categoria' 'beleza' %}">Beleza</a></li>
+                            <li><a class="dropdown-item" href="{% url 'produtos:produtos_categoria' 'bem-estar' %}">Bem-estar</a></li>
+                        </ul>
+                    </li> {% endcomment %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'usuarios:depoimentos' %}">Depoimentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'usuarios:contato' %}">Contato</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-secondary btn-sm ms-2 theme-toggle" id="themeToggle" title="Alternar modo escuro">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main style="padding-top: 76px;">
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-dark text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-success mb-3">
+                        <i class=""></i>New Life
+                    </h5>
+                    <p>Transformando vidas através de produtos de qualidade para saúde, bem-estar e beleza.</p>
+                    {% comment %} <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                         <a href="#" class="text-light me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-whatsapp"></i></a>
+                    </div>     {% endcomment %}
+                </div>
+                
+                {% comment %} <div class="col-md-2 mb-4">
+                    <h6 class="text-success">Produtos</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'produtos:produtos_categoria' 'esportes' %}" class="text-light text-decoration-none">Esportes</a></li>
+                        <li><a href="{% url 'produtos:produtos_categoria' 'beleza' %}" class="text-light text-decoration-none">Beleza</a></li>
+                        <li><a href="{% url 'produtos:produtos_categoria' 'bem-estar' %}" class="text-light text-decoration-none">Bem-estar</a></li>
+                    </ul>
+                </div> {% endcomment %}
+                
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-success">Links Úteis</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'produtos:home' %}" class="text-light text-decoration-none">Início</a></li>
+                        <li><a href="{% url 'usuarios:depoimentos' %}" class="text-light text-decoration-none">Depoimentos</a></li>
+                        <li><a href="{% url 'usuarios:contato' %}" class="text-light text-decoration-none">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h6 class="text-success">Contato</h6>
+                    <p class="mb-1"><i class="fas fa-envelope me-2"></i>np.contato.newlife@gmail.com</p>
+                    <p class="mb-1"><i class="fab fa-instagram me-2"></i>@np.newlife</p>
+                    {% comment %} <p class="mb-1"><i class="fas fa-phone me-2"></i>(82) 99924-6269</p> {% endcomment %}
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Nichollas Paes. Todos os direitos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Desenvolvido com <i class="fas fa-heart text-danger"></i> para sua saúde</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% load static %}
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

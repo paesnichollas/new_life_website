@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contato - New Life{% endblock %}
+
+{% block content %}
+<!-- Header da Página -->
+<section class="page-header py-5 bg-gradient">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Formulário de Contato e Informações -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Formulário -->
+            <div class="col-lg-8">
+                <div class="contact-form bg-white rounded shadow-sm p-4">
+                    <h2 class="fw-bold mb-4">Envie sua Mensagem</h2>
+                    <p class="text-muted mb-4">
+                        Preencha o formulário abaixo e nossa equipe entrará em contato com você o mais breve possível.
+                    </p>
+                    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.nome.id_for_label }}" class="form-label fw-bold">
+                                    {{ form.nome.label }}
+                                </label>
+                                {{ form.nome }}
+                                {% if form.nome.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.nome.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                    {{ form.email.label }}
+                                </label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.assunto.id_for_label }}" class="form-label fw-bold">
+                                {{ form.assunto.label }}
+                            </label>
+                            {{ form.assunto }}
+                            {% if form.assunto.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.assunto.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.mensagem.id_for_label }}" class="form-label fw-bold">
+                                {{ form.mensagem.label }}
+                            </label>
+                            {{ form.mensagem }}
+                            {% if form.mensagem.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.mensagem.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-paper-plane me-2"></i>Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Informações de Contato -->
+            <div class="col-lg-4">
+                <div class="contact-info">
+                    <h3 class="fw-bold mb-4">Informações de Contato</h3>
+                    
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-envelope fa-lg text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">E-mail</h5>
+                                <p class="text-muted mb-0">np.contato.newlife@gmail.com</p>
+                                {% comment %} <p class="text-muted">suporte@newlife.com.br</p> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% comment %} <div class="contact-item mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-phone fa-lg text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Telefone</h5>
+                                <p class="text-muted mb-0">(11) 99999-9999</p>
+                                <p class="text-muted">Segunda a Sexta: 8h às 18h</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    
+                    {% comment %} <div class="contact-item mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon me-3">
+                                <i class="fab fa-whatsapp fa-lg text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">WhatsApp</h5>
+                                <p class="text-muted mb-0">(82) 99924-6269</p>
+                                <a href="https://wa.me/5582999246269" target="_blank" class="btn btn-success btn-sm mt-2">
+                                    <i class="fab fa-whatsapp me-1"></i>Conversar
+                                </a>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon me-3">
+                                <i class="fab fa-instagram fa-lg text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Instagram</h5>
+                                
+                                <a href="#" target="_blank" class="btn btn-success btn-sm mt-2">
+                                    <i class="fab fa-instagram me-1"></i>Acessar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% comment %} <div class="contact-item mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-map-marker-alt fa-lg text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Endereço</h5>
+                                <p class="text-muted mb-0">
+                                    Rua da Saúde, 123<br>
+                                    Vila Bem-estar<br>
+                                    São Paulo - SP<br>
+                                    CEP: 01234-567
+                                </p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    
+                    <!-- Redes Sociais -->
+                    {% comment %} <div class="social-section">
+                        <h5 class="fw-bold mb-3">Siga-nos nas Redes Sociais</h5>
+                        <div class="social-links">
+                            <a href="#" class="btn btn-outline-primary me-2 mb-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-danger me-2 mb-2">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-danger me-2 mb-2">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-info mb-2">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="fw-bold text-center mb-5">Perguntas Frequentes</h3>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                Como posso fazer um pedido?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Você pode fazer seu pedido através dos links de compra em cada produto, que direcionam para nossos parceiros de venda online.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                Qual o prazo de entrega?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                O prazo de entrega varia conforme a região e o produto escolhido. Geralmente entre 3 a 7 dias úteis para todo o Brasil.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                Os produtos têm garantia?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Sim! Todos os nossos produtos possuem garantia de qualidade e você pode trocar em caso de defeito ou insatisfação.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                Como posso tirar dúvidas sobre os produtos?
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Você pode entrar em contato conosco através do formulário acima, WhatsApp e e-mail. Nossa equipe está pronta para ajudar!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-success text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-2">Ainda tem dúvidas?</h3>
+                <p class="lead mb-0">Nossa equipe de especialistas está pronta para ajudar você a escolher os melhores produtos para suas necessidades.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="#" target="_blank" class="btn btn-light btn-lg">
+                    <i class="fab fa-instagram me-2"></i>Falar no Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

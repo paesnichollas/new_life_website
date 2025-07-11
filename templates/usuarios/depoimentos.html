@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Depoimentos - New Life{% endblock %}
+
+{% block content %}
+<!-- Header da Página -->
+<section class="page-header py-5 bg-gradient">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Introdução -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="fw-bold mb-4">Transformações que Inspiram</h2>
+                <p class="lead text-muted">
+                    Conheça as histórias de pessoas que transformaram suas vidas com nossos produtos. 
+                    Cada depoimento é uma prova real do poder dos nossos suplementos, cosméticos e produtos naturais.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Galeria de Depoimentos -->
+{% if depoimentos %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            {% for depoimento in depoimentos %}
+            <div class="col-lg-6 col-xl-4">
+                <div class="testimonial-card h-100 bg-white rounded shadow-sm overflow-hidden">
+                    <!-- Vídeo do YouTube -->
+                    <div class="testimonial-video">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="{{ depoimento.get_youtube_embed_url }}" 
+                                    title="Depoimento {{ depoimento.nome_cliente }}" 
+                                    allowfullscreen
+                                    class="rounded-top"></iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Conteúdo do Depoimento -->
+                    <div class="card-body p-4">
+                        <div class="testimonial-header mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="testimonial-avatar me-3">
+                                    <div class="avatar-circle bg-success text-black d-flex align-items-center justify-content-center">
+                                        {{ depoimento.nome_cliente|first|upper }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0">{{ depoimento.nome_cliente }}</h5>
+                                    <div class="stars text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="blockquote mb-3">
+                            <p class="mb-0">"{{ depoimento.citacao }}"</p>
+                        </blockquote>
+                        
+                        <div class="testimonial-story">
+                            <h6 class="fw-bold text-success mb-2">História de Transformação:</h6>
+                            <p class="text-muted small">{{ depoimento.texto_transformacao|truncatewords:30 }}</p>
+                            
+                            {% if depoimento.texto_transformacao|length > 150 %}
+                            <button class="btn btn-sm btn-outline-success" 
+                                    type="button" 
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#story-{{ depoimento.id }}" 
+                                    aria-expanded="false">
+                                Ler mais
+                            </button>
+                            
+                            <div class="collapse mt-2" id="story-{{ depoimento.id }}">
+                                <p class="text-muted small">{{ depoimento.texto_transformacao }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% else %}
+<!-- Nenhum depoimento encontrado -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-comments fa-4x text-muted mb-4"></i>
+                    <h3 class="text-muted">Nenhum depoimento disponível</h3>
+                    <p class="text-muted">Em breve teremos depoimentos incríveis para compartilhar com você!</p>
+                    <a href="{% url 'produtos:home' %}" class="btn btn-success">
+                        <i class="fas fa-arrow-left me-2"></i>Voltar ao Início
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Estatísticas -->
+<section class="py-5 bg-success text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h2 class="display-4 fw-bold mb-2">1000+</h2>
+                    <p class="lead mb-0">Clientes Satisfeitos</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h2 class="display-4 fw-bold mb-2">95%</h2>
+                    <p class="lead mb-0">Taxa de Satisfação</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h2 class="display-4 fw-bold mb-2">50+</h2>
+                    <p class="lead mb-0">Produtos Disponíveis</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h2 class="display-4 fw-bold mb-2">5</h2>
+                    <p class="lead mb-0">Anos de Experiência</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="fw-bold mb-4">Você também pode ter sua história de transformação!</h3>
+                <p class="lead text-muted mb-4">
+                    Explore nossos produtos e descubra como podemos ajudar você a alcançar seus objetivos de saúde, bem-estar e beleza.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{% url 'produtos:home' %}#categorias" class="btn btn-success btn-lg me-3">
+                        <i class="fas fa-shopping-cart me-2"></i>Ver Produtos
+                    </a>
+                    <a href="{% url 'usuarios:contato' %}" class="btn btn-outline-success btn-lg">
+                        <i class="fas fa-envelope me-2"></i>Fale Conosco
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

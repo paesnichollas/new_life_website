@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ categoria.nome }} - New Life{% endblock %}
+
+{% block content %}
+<!-- Header da Categoria -->
+{% comment %} <section class="category-header py-5 bg-gradient">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold text-white mb-3">{{ categoria.nome }}</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="{% url 'produtos:home' %}" class="text-white-50">Início</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">{{ categoria.nome }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+<!-- Lista de Produtos -->
+<section class="py-5">
+    <div class="container">
+        {% if produtos %}
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0">Produtos de {{ categoria.nome }}</h2>
+                    <span class="badge bg-secondary">{{ produtos|length }} produto{{ produtos|length|pluralize }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for produto in produtos|dictsort:"nome" %}
+            <div class="col-lg-4 col-md-6">
+                <div class="product-card h-100 bg-white rounded shadow-sm hover-lift">
+                    {% if produto.imagem %}
+                    <img src="{{ produto.imagem }}" class="card-img-top product-image" alt="{{ produto.nome }}">
+                    {% else %}
+                    <div class="product-placeholder d-flex align-items-center justify-content-center">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">{{ produto.nome }}</h5>
+                        <p class="card-text text-muted">{{ produto.descricao|truncatewords:20 }}</p>
+                        
+                        {% if produto.get_beneficios_list %}
+                        <div class="benefits mb-3">
+                            <h6 class="fw-bold text-success mb-2">Principais Benefícios:</h6>
+                            <ul class="list-unstyled">
+                                {% for beneficio in produto.get_beneficios_list|slice:":3" %}
+                                <li class="mb-1">
+                                    <i class="fas fa-check text-success me-2"></i>{{ beneficio }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <a href="{% url 'produtos:detalhe_produto' categoria.slug produto.id %}" class="btn btn-outline-success w-100 mb-2">
+                            Ver Detalhes
+                        </a>
+
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            {% if produto.lancamento %}
+                            <span class="badge bg-warning text-dark">
+                                <i class="fas fa-star me-1"></i>Lançamento
+                            </span>
+                            {% endif %}
+                            {% if produto.mais_vendido %}
+                            <span class="badge bg-danger">
+                                <i class="fas fa-fire me-1"></i>Mais Vendido
+                            </span>
+                            {% endif %}
+                            {% if produto.destaque %}
+                            <span class="badge bg-primary">
+                                <i class="fas fa-gem me-1"></i>Destaque
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% else %}
+        <!-- Nenhum produto encontrado -->
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-box-open fa-4x text-muted mb-4"></i>
+                    <h3 class="text-muted">Nenhum produto encontrado</h3>
+                    <p class="text-muted">Não há produtos disponíveis nesta categoria no momento.</p>
+                    <a href="{% url 'produtos:home' %}" class="btn btn-success">
+                        <i class="fas fa-arrow-left me-2"></i>Voltar ao Início
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% comment %} <!-- Outras Categorias -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h3 class="fw-bold">Explore Outras Categorias</h3>
+            </div>
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-4">
+                <a href="{% url 'produtos:produtos_categoria' 'esportes' %}" 
+                   class="category-link d-block p-3 bg-white rounded shadow-sm text-decoration-none hover-lift {% if categoria.slug == 'esportes' %}active{% endif %}">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-dumbbell fa-2x text-primary me-3"></i>
+                        <div>
+                            <h5 class="mb-0 text-dark">Esportes</h5>
+                            <small class="text-muted">Suplementos e performance</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-md-4">
+                <a href="{% url 'produtos:produtos_categoria' 'beleza' %}" 
+                   class="category-link d-block p-3 bg-white rounded shadow-sm text-decoration-none hover-lift {% if categoria.slug == 'beleza' %}active{% endif %}">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-spa fa-2x text-danger me-3"></i>
+                        <div>
+                            <h5 class="mb-0 text-dark">Beleza</h5>
+                            <small class="text-muted">Cosméticos e cuidados</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-md-4">
+                <a href="{% url 'produtos:produtos_categoria' 'bem-estar' %}" 
+                   class="category-link d-block p-3 bg-white rounded shadow-sm text-decoration-none hover-lift {% if categoria.slug == 'bem-estar' %}active{% endif %}">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-leaf fa-2x text-success me-3"></i>
+                        <div>
+                            <h5 class="mb-0 text-dark">Bem-estar</h5>
+                            <small class="text-muted">Produtos naturais</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
+{% endblock %}
+
