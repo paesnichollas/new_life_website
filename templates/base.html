@@ -143,5 +143,23 @@
     <script src="{% static 'js/main.js' %}"></script>
     
     {% block extra_js %}{% endblock %}
+    <script>
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('custom-loader');
+            if (loader) {
+            loader.style.display = 'none';
+            }
+        });
+    </script>
+
 </body>
+
+<!-- Tela de Carregamento -->
+<div id="custom-loader" style="position: fixed; inset: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; font-family: 'Poppins', sans-serif;">
+    <div class="spinner-border text-success mb-3" role="status">
+        <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="text-dark fs-5 fw-medium">O site está carregando, por favor aguarde...</p>
+</div>
+
 </html>
