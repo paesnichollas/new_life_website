@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resultados da Busca - New Life{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h2 class="h4 mb-0">Resultados da Busca para "{{ query }}"</h2>
+                <span class="badge bg-secondary">{{ produtos|length }} produto{{ produtos|length|pluralize }}</span>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for produto in produtos %}
+            <div class="col-lg-4 col-md-6">
+                <div class="product-card h-100 bg-white rounded shadow-sm hover-lift">
+                    {% if produto.imagem %}
+                    <img src="{{ produto.imagem }}" class="card-img-top product-image" alt="{{ produto.nome }}">
+                    {% else %}
+                    <div class="product-placeholder d-flex align-items-center justify-content-center">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">{{ produto.nome }}</h5>
+                        <p class="card-text text-muted">{{ produto.descricao|truncatewords:20 }}</p>
+                        
+                        {% if produto.get_beneficios_list %}
+                        <div class="benefits mb-3">
+                            <h6 class="fw-bold text-success mb-2">Principais Benefícios:</h6>
+                            <ul class="list-unstyled">
+                                {% for beneficio in produto.get_beneficios_list|slice:":3" %}
+                                <li class="mb-1">
+                                    <i class="fas fa-check text-success me-2"></i>{{ beneficio }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <a href="{% url 'produtos:detalhe_produto' produto.categoria.slug produto.id %}" class="btn btn-outline-success w-100 mb-2">
+                            Ver Detalhes
+                        </a>
+
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            {% if produto.lancamento %}
+                            <span class="badge bg-warning text-dark">
+                                <i class="fas fa-star me-1"></i>Lançamento
+                            </span>
+                            {% endif %}
+                            {% if produto.mais_vendido %}
+                            <span class="badge bg-danger">
+                                <i class="fas fa-fire me-1"></i>Mais Vendido
+                            </span>
+                            {% endif %}
+                            {% if produto.destaque %}
+                            <span class="badge bg-primary">
+                                <i class="fas fa-gem me-1"></i>Destaque
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if not produtos %}
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-box-open fa-4x text-muted mb-4"></i>
+                    <h3 class="text-muted">Nenhum produto encontrado</h3>
+                    <p class="text-muted">Não encontramos produtos para "{{ query }}". Tente outro termo de busca.</p>
+                    <a href="{% url 'produtos:home' %}" class="btn btn-success">
+                        <i class="fas fa-arrow-left me-2"></i>Voltar ao Início
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+

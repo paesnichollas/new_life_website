@@ -51,3 +51,19 @@ def detalhe_produto(request, categoria_slug, produto_id):
         'produtos_relacionados': produtos_relacionados,
     }
     return render(request, 'produtos/detalhe_produto.html', context)
+
+def buscar_produtos(request):
+    """Busca produtos por nome em todas as categorias"""
+    query_string = request.GET.get("q")
+    print(f"Query String: {query_string}")
+    if query_string:
+        produtos = Produto.objects.filter(nome__icontains=query_string)
+    else:
+        produtos = Produto.objects.all()
+    print(f"Produtos encontrados: {produtos.count()}")
+    context = {
+        "produtos": produtos,
+        "query": query_string
+    }
+
+    return render(request, "produtos/produtos_busca.html", context)
