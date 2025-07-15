@@ -154,19 +154,76 @@ document.addEventListener('DOMContentLoaded', function() {
         counterObserver.observe(counter);
     });
     
-    // Melhorar experiência de navegação mobile
+    // CORREÇÃO: Melhorar experiência de navegação mobile - comportamento corrigido para dropdowns
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarCollapse = document.querySelector('.navbar-collapse');
     
     if (navbarToggler && navbarCollapse) {
-        // Fechar menu ao clicar em um link
-        const navLinks = navbarCollapse.querySelectorAll('.nav-link');
+        // Fechar menu ao clicar em um link, MAS NÃO em dropdowns
+        const navLinks = navbarCollapse.querySelectorAll('.nav-link:not(.dropdown-toggle)');
+        const dropdownItems = navbarCollapse.querySelectorAll('.dropdown-item');
+        
+        // Fechar menu apenas para links normais (não dropdown toggles)
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (navbarCollapse.classList.contains('show')) {
                     navbarToggler.click();
                 }
             });
+        });
+        
+        // Fechar menu quando um item do dropdown é clicado
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (navbarCollapse.classList.contains('show')) {
+                    navbarToggler.click();
+                }
+            });
+        });
+        
+        // CORREÇÃO: Prevenir comportamento padrão do link dropdown em mobile
+        const dropdownToggles = navbarCollapse.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                // Em dispositivos móveis, garantir que o dropdown funcione corretamente
+                if (window.innerWidth < 992) { // Bootstrap lg breakpoint
+                    e.preventDefault();
+                    
+                    // Obter o dropdown menu associado
+                    const dropdownMenu = this.nextElementSibling;
+                    if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                        // Toggle manual do dropdown
+                        if (dropdownMenu.classList.contains('show')) {
+                            dropdownMenu.classList.remove('show');
+                            this.setAttribute('aria-expanded', 'false');
+                        } else {
+                            // Fechar outros dropdowns abertos
+                            const openDropdowns = navbarCollapse.querySelectorAll('.dropdown-menu.show');
+                            openDropdowns.forEach(menu => {
+                                menu.classList.remove('show');
+                                const toggle = menu.previousElementSibling;
+                                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+                            });
+                            
+                            // Abrir este dropdown
+                            dropdownMenu.classList.add('show');
+                            this.setAttribute('aria-expanded', 'true');
+                        }
+                    }
+                }
+            });
+        });
+        
+        // CORREÇÃO: Fechar dropdowns quando clicar fora
+        document.addEventListener('click', function(e) {
+            if (!navbarCollapse.contains(e.target)) {
+                const openDropdowns = navbarCollapse.querySelectorAll('.dropdown-menu.show');
+                openDropdowns.forEach(menu => {
+                    menu.classList.remove('show');
+                    const toggle = menu.previousElementSibling;
+                    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+                });
+            }
         });
     }
     
@@ -232,6 +289,39 @@ document.addEventListener('DOMContentLoaded', function() {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
+        }
+        
+        /* CORREÇÃO: Melhorar comportamento do dropdown em mobile */
+        @media (max-width: 991.98px) {
+            .navbar-nav .dropdown-menu {
+                position: static !important;
+                float: none;
+                width: auto;
+                margin-top: 0;
+                background-color: transparent;
+                border: 0;
+                box-shadow: none;
+                padding-left: 1rem;
+            }
+            
+            .navbar-nav .dropdown-menu .dropdown-item {
+                color: rgba(0,0,0,.55);
+                padding: 0.25rem 0;
+            }
+            
+            .navbar-nav .dropdown-menu .dropdown-item:hover,
+            .navbar-nav .dropdown-menu .dropdown-item:focus {
+                color: rgba(0,0,0,.7);
+                background-color: transparent;
+            }
+            
+            .navbar-nav .dropdown-toggle::after {
+                transition: transform 0.3s ease;
+            }
+            
+            .navbar-nav .dropdown-toggle[aria-expanded="true"]::after {
+                transform: rotate(180deg);
+            }
         }
     `;
     document.head.appendChild(style);
@@ -355,3 +445,4 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("Modo escuro implementado com sucesso! 🌙");
     console.log("Tema atual:", body.classList.contains("dark-mode") ? "Escuro" : "Claro");
 });
+
