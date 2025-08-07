@@ -26,5 +26,5 @@ class CategoriaAdmin(admin.ModelAdmin):
 class ProdutoAdmin(admin.ModelAdmin):
     list_display = ['nome', 'categoria', 'destaque', 'lancamento', 'mais_vendido']
     list_filter = ['categoria', 'destaque', 'lancamento', 'mais_vendido']
-    search_fields = ['nome', 'descricao']
+    search_fields = ['nome', 'descricao', 'link_compra']
     list_editable = ['destaque', 'lancamento', 'mais_vendido']
