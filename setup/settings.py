@@ -169,6 +169,3 @@ SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)
 SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int)
 X_FRAME_OPTIONS = config('X_FRAME_OPTIONS', default='DENY')
-
-# Configurações de redirecionamento de produtos
-CONSULTOR_LINK = config('CONSULTOR_LINK', default='https://loja.newlifeoficial.com/nichollaspaes')
