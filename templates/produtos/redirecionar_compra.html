@@ -1,0 +1,563 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionando para a Loja - New Life</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variáveis CSS - Paleta New Life */
+        :root {
+            --primary-color: #24C477;
+            --secondary-color: #6c757d;
+            --success-color: #24C477;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #202725;
+            --font-family: 'Poppins', sans-serif;
+            --border-radius: 16px;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            
+            /* Cores específicas do tema New Life */
+            --bg-primary: #202725;
+            --bg-secondary: #232b24;
+            --bg-tertiary: #222b24;
+            --text-primary: #f8f9fa;
+            --text-secondary: #a6b2b9;
+            --text-muted: #bfc7cf;
+            --border-color: #313a36;
+            --card-bg: #232b24;
+            --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+            --progress-color: #24C477;
+            --alert-bg: #232b24;
+            --alert-border: #24C477;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .main-container {
+            background: var(--card-bg);
+            max-width: 600px;
+            width: 95vw;
+            max-height: 85vh;
+            padding: 2rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            z-index: 3;
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--progress-color);
+            border-radius: 3px;
+            animation: progress 5s ease-in-out;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .status {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .product-info {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .product-info strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .instructions {
+            background: var(--alert-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            border: 1px solid var(--alert-border);
+            text-align: left;
+            color: var(--text-primary);
+        }
+
+        .instructions h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .instructions ol {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .instructions li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .alert {
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--text-primary);
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .alert-warning {
+            background: var(--alert-bg);
+            border-color: var(--warning-color);
+        }
+
+        .alert-info {
+            background: var(--alert-bg);
+            border-color: var(--info-color);
+        }
+
+        .alert i {
+            margin-right: 0.5rem;
+        }
+
+        h2 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1.5rem 1rem;
+                max-height: 90vh;
+            }
+            
+            .logo img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .instructions {
+                padding: 1rem;
+            }
+            
+            .product-info {
+                padding: 0.75rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .instructions h4 {
+                font-size: 0.9rem;
+            }
+
+            .instructions li {
+                font-size: 0.85rem;
+            }
+
+            .alert {
+                font-size: 0.85rem;
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 1rem 0.5rem;
+                max-height: 95vh;
+            }
+            
+            .logo img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 1rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            p {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .instructions {
+                padding: 0.75rem;
+                margin: 0.75rem 0;
+            }
+
+            .instructions h4 {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .instructions li {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .product-info {
+                padding: 0.5rem;
+                margin: 0.75rem 0;
+            }
+
+            .alert {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+                margin: 0.75rem 0;
+            }
+
+            .progress {
+                margin: 1rem 0;
+            }
+
+            .status {
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 0.75rem 0.5rem;
+                max-height: 98vh;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.8rem;
+            }
+
+            .instructions li {
+                font-size: 0.75rem;
+            }
+
+            .alert {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Animações de entrada */
+        .main-container {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Efeito de brilho no logo */
+        .logo img {
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% {
+                filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 4px 12px rgba(36, 196, 119, 0.3));
+            }
+        }
+
+        /* Melhorias de acessibilidade */
+        .main-container:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Contraste melhorado */
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="logo">
+            <img src="{% static 'img/banner/LOGOMARCA.png' %}" alt="New Life Logo">
+        </div>
+        <div class="spinner"></div>
+        
+        <div id="first-time-content" style="display: none;">
+            <h2><i class="fas fa-link me-2"></i>Vinculando sua Compra ao Consultor</h2>
+            <p>Para garantir que sua compra seja vinculada ao consultor correto e você receba o suporte adequado, você será redirecionado à nossa loja oficial.</p>
+            
+            <div class="product-info">
+                <strong><i class="fas fa-box me-2"></i>Produto:</strong> {{ produto.nome }}<br>
+                <small class="text-muted"><i class="fas fa-clock me-2"></i>Preparando redirecionamento...</small>
+            </div>
+            
+            <div class="instructions">
+                <h4><i class="fas fa-info-circle"></i>Instruções Importantes:</h4>
+                <ol>
+                    <li><strong>Você será redirecionado à loja do consultor</strong> para vincular sua compra ao consultor correto</li>
+                    <li><strong>Após acessar a loja do consultor</strong>, volte ao site original (New Life)</li>
+                    <li><strong>Clique novamente em "Comprar Agora"</strong> para ser levado diretamente ao produto final</li>
+                </ol>
+            </div>
+            
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Atenção:</strong> Este processo garante que sua compra seja vinculada ao consultor correto e você receba todo o suporte necessário.
+            </div>
+            
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <div class="status">
+                <div id="status-text">Redirecionando para a loja do consultor...</div>
+            </div>
+        </div>
+        
+        <div id="returning-content" style="display: none;">
+            <h2><i class="fas fa-check-circle me-2"></i>Redirecionando para o Produto</h2>
+            <p>Perfeito! Você já passou pela loja do consultor. Agora será redirecionado diretamente ao produto final.</p>
+            
+            <div class="product-info">
+                <strong><i class="fas fa-box me-2"></i>Produto:</strong> {{ produto.nome }}<br>
+                <small class="text-muted"><i class="fas fa-rocket me-2"></i>Redirecionamento direto ao produto...</small>
+            </div>
+            
+            <div class="alert alert-info">
+                <i class="fas fa-check-circle"></i>
+                <strong>Perfeito!</strong> Sua compra será vinculada ao consultor correto e você receberá todo o suporte necessário.
+            </div>
+            
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <div class="status">
+                <div id="status-text">Redirecionando para o produto...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configurações
+        const STORAGE_KEY = 'newlife_consultor_visited';
+        const EXPIRY_TIME = 30 * 60 * 1000; // 30 minutos em millisegundos
+        const lojaConsultor = '{{ loja_consultor }}';
+        const urlProdutoFinal = '{{ url_produto_final }}';
+        const categoriaSlug = '{{ categoria_slug }}';
+        const produtoId = '{{ produto_id }}';
+        
+        // Função para verificar se o usuário já visitou a loja do consultor
+        function hasVisitedConsultor() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return false;
+            
+            try {
+                const data = JSON.parse(stored);
+                const now = Date.now();
+                
+                // Verificar se não expirou (30 minutos)
+                if (now - data.timestamp > EXPIRY_TIME) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    return false;
+                }
+                
+                return true;
+            } catch (e) {
+                localStorage.removeItem(STORAGE_KEY);
+                return false;
+            }
+        }
+        
+        // Função para marcar que o usuário visitou a loja do consultor
+        function markConsultorVisited() {
+            const data = {
+                timestamp: Date.now(),
+                categoriaSlug: categoriaSlug,
+                produtoId: produtoId
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+        
+        // Função para mostrar conteúdo baseado no status
+        function showContent(isReturning) {
+            const firstTimeContent = document.getElementById('first-time-content');
+            const returningContent = document.getElementById('returning-content');
+            
+            if (isReturning) {
+                firstTimeContent.style.display = 'none';
+                returningContent.style.display = 'block';
+            } else {
+                firstTimeContent.style.display = 'block';
+                returningContent.style.display = 'none';
+            }
+        }
+        
+        // Função para atualizar status
+        function updateStatus(message) {
+            const statusElement = document.getElementById('status-text');
+            if (statusElement) {
+                statusElement.textContent = message;
+            }
+        }
+        
+        // Verificar se o usuário já visitou a loja do consultor
+        const hasVisited = hasVisitedConsultor();
+        
+        if (hasVisited) {
+            // Usuário já visitou, redirecionar diretamente ao produto
+            showContent(true);
+            updateStatus('Redirecionando para o produto...');
+            
+            setTimeout(function() {
+                window.location.href = urlProdutoFinal;
+            }, 2000);
+            
+        } else {
+            // Primeira visita, redirecionar para a loja do consultor
+            showContent(false);
+            updateStatus('Redirecionando para a loja do consultor...');
+            
+            // Marcar que visitou a loja do consultor
+            markConsultorVisited();
+            
+            setTimeout(function() {
+                window.location.href = lojaConsultor;
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

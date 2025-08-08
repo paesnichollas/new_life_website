@@ -90,19 +90,33 @@
                         <h4 class="fw-bold mb-3">Interessado neste produto?</h4>
                         <p class="text-muted mb-3">Clique no botão abaixo para ser direcionado à nossa loja parceira e finalizar sua compra.</p>
 
-                        <a href="{{ produto.link_compra }}" target="_blank" class="btn btn-success btn-lg w-100 mb-3">
+                        <a href="{% url 'produtos:redirecionar_compra' categoria.slug produto.id %}" class="btn btn-success btn-lg w-100 mb-3">
                             <i class="fas fa-shopping-cart me-2"></i>Comprar Agora
                             <i class="fas fa-external-link-alt ms-2"></i>
                         </a>
 
-                        {% comment %} <div class="alert alert-id-aviso d-flex align-items-start mt-2" role="alert">
-                            <i class="fas fa-exclamation-circle me-2 mt-1 text-warning"></i>
-                            <div>
-                                <strong class="text-warning">Aviso importante:</strong><br>
-                                Ao acessar a loja, insira o <span class="highlight">ID: 11888</span> quando for solicitado.<br>
-                                A página será recarregada automaticamente. Depois disso, <span class="highlight">volte aqui</span> e clique novamente em <span class="highlight">Comprar Agora</span>.
+                        <div class="alert alert-warning soft-alert" role="alert" aria-live="polite">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-circle-exclamation me-2 mt-1"></i>
+                                <div>
+                                    <strong>Aviso importante — Passo a Passo para Comprar:</strong>
+                                    <ol class="mb-0 mt-2 ps-3 nl-steps-compact">
+                                        <li>
+                                            Clique <strong>uma vez</strong> em <em>Comprar Agora</em>. Você será levado à <strong>loja do consultor</strong> para vincular seu acesso.
+                                        </li>
+                                        <li>
+                                            Quando a loja carregar, <strong>volte para esta página</strong> (use o botão voltar do navegador).
+                                        </li>
+                                        <li>
+                                            Clique em <strong>Comprar Agora</strong> <em>novamente</em>. Você será levado <strong>diretamente ao produto</strong> já vinculado ao consultor.
+                                        </li>
+                                    </ol>
+                                    <small class="text-muted d-block mt-2">
+                                        Dica: se algo não ocorrer como esperado, recarregue esta página e repita os passos.
+                                    </small>
+                                </div>
                             </div>
-                        </div> {% endcomment %}
+                        </div>
 
 
                         <div class="d-flex justify-content-center">

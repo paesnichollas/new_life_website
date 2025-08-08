@@ -67,3 +67,23 @@ def buscar_produtos(request):
     }
 
     return render(request, "produtos/produtos_busca.html", context)
+
+def redirecionar_compra(request, categoria_slug, produto_id):
+    """Redireciona para a loja do consultor e depois para a página do produto"""
+    produto = get_object_or_404(Produto, id=produto_id)
+    
+    # URL da loja do consultor
+    loja_consultor = "https://loja.newlifeoficial.com/nichollaspaes"
+    
+    # URL final do produto (extraída do link_compra do produto)
+    url_produto_final = produto.link_compra
+    
+    context = {
+        'produto': produto,
+        'loja_consultor': loja_consultor,
+        'url_produto_final': url_produto_final,
+        'categoria_slug': categoria_slug,
+        'produto_id': produto_id,
+    }
+    
+    return render(request, 'produtos/redirecionar_compra.html', context)

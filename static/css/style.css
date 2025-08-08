@@ -1024,30 +1024,56 @@ body.dark-mode .list-group-item.active {
     border-color: var(--border-color) var(--border-color) transparent;
 }
 
-/* ===== Estilo dinâmico para o aviso de ID ===== */
+/* ===== Estilo para o passo a passo no alerta do card de compra ===== */
 
-.alert-id-aviso {
-    border: 1px solid var(--warning-color);
-    background-color: #fff3cd; 
-    color: #2c2c2c;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* sombra sutil */
-    border-radius: 0.5rem;
+/* Compactação e legibilidade do passo a passo no alerta do card de compra */
+.soft-alert .nl-steps-compact li { 
+    margin-bottom: .35rem; 
+}
+.soft-alert .nl-steps-compact { 
+    margin-bottom: 0; 
 }
 
-.alert-id-aviso .highlight {
-    font-weight: bold;
-    color: #111;
+/* Melhorar contraste do texto no alerta amarelo */
+.soft-alert {
+    color: #856404 !important;
 }
 
-body.dark-mode .alert-id-aviso {
-    background-color: rgba(245, 158, 11, 0.15);
-    color: var(--text-primary);
-    box-shadow: none;
+.soft-alert strong {
+    color: #664d03 !important;
 }
 
-body.dark-mode .alert-id-aviso .highlight {
-    color: #fff;
+.soft-alert ol {
+    color: #856404 !important;
+}
+
+.soft-alert li {
+    color: #856404 !important;
+}
+
+.soft-alert .text-muted {
+    color: #6c5a00 !important;
+}
+
+/* Ajuste para modo escuro */
+body.dark-mode .soft-alert {
+    color: var(--text-primary) !important;
+}
+
+body.dark-mode .soft-alert strong {
+    color: var(--text-primary) !important;
+}
+
+body.dark-mode .soft-alert ol {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-mode .soft-alert li {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-mode .soft-alert .text-muted {
+    color: var(--text-muted) !important;
 }
 
 /* ===== INÍCIO DO CSS MOBILE-DROPDOWN INCORPORADO ===== */
