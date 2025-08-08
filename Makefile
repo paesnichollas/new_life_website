@@ -48,3 +48,24 @@ test:
 clean:
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -exec rm -rf {} +
+
+# =============================================================================
+# BACKUP DO BANCO POSTGRESQL NO RENDER
+# =============================================================================
+
+# Variável de conexão - lê DATABASE_URL do arquivo .env
+DB_URL := $(shell grep DATABASE_URL .env | cut -d '=' -f2-)
+
+# Alvo phony para backup do banco no Render
+.PHONY: backup-db-render
+backup-db-render:
+	@echo "Iniciando backup do banco PostgreSQL no Render..."
+	# Cria diretório backup/ caso não exista
+	mkdir -p backup
+	# Executa pg_dump com formato custom, sem ACL e sem owner
+	pg_dump $(DB_URL) --format=custom --no-acl --no-owner \
+		-o backup/newlife_$(shell date +%Y%m%d_%H%M%S).dump
+	@echo "Backup criado com sucesso!"
+	# Remove arquivos de backup com mais de 7 dias
+	find backup -name "*.dump" -type f -mtime +7 -delete
+	@echo "Arquivos de backup antigos removidos (mais de 7 dias)"

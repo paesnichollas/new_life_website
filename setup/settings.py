@@ -15,6 +15,7 @@ from pathlib import Path
 from pickle import TRUE
 from decouple import config
 import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool, default=True)
+#DEBUG = config('DEBUG', cast=bool, default=True)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Application definition
@@ -80,8 +81,15 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
+# 1. Carrega o .env
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+# 2. Pega DEBUG do .env (ele vem como string)
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+# 3. Configura DATABASES
 if DEBUG:
-    # Usar SQLite para desenvolvimento (DEBUG = True)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -89,10 +97,28 @@ if DEBUG:
         }
     }
 else:
-    # Usar PostgreSQL para produção (DEBUG = False)
+    #produção
+    # dj_database_url lê DATABASE_URL corretamente agora
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=False
+        )
     }
+    
+    #local
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': os.getenv('DB_ENGINE'),
+    #         'NAME': os.getenv('DB_NAME'),
+    #         'USER': os.getenv('DB_USER'),
+    #         'PASSWORD': os.getenv('DB_PASSWORD'),
+    #         'HOST': os.getenv('DB_HOST'),
+    #         'PORT': os.getenv('DB_PORT'),
+    #     }
+    # }
+
 
 
 
