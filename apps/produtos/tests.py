@@ -172,3 +172,118 @@ class CategoriaViewsTest(TestCase):
         """Testa 404 para categoria inexistente"""
         response = self.client.get(reverse('produtos:produtos_categoria', args=['categoria-inexistente']))
         self.assertEqual(response.status_code, 404)
+
+
+class ProdutoAtivoTestCase(TestCase):
+    def setUp(self):
+        """Configuração inicial para os testes"""
+        self.client = Client()
+        
+        # Criar categoria de teste
+        self.categoria = Categoria.objects.create(
+            nome="Teste Categoria",
+            slug="teste-categoria"
+        )
+        
+        # Criar produtos de teste
+        self.produto_ativo = Produto.objects.create(
+            categoria=self.categoria,
+            nome="Produto Ativo",
+            link_compra="https://exemplo.com",
+            descricao="Descrição do produto ativo",
+            beneficios="Benefício 1\nBenefício 2",
+            composicao="Composição do produto",
+            contraindicacao="Contraindicação do produto",
+            modo_uso="Modo de uso do produto",
+            ativo=True
+        )
+        
+        self.produto_inativo = Produto.objects.create(
+            categoria=self.categoria,
+            nome="Produto Inativo",
+            link_compra="https://exemplo2.com",
+            descricao="Descrição do produto inativo",
+            beneficios="Benefício 1\nBenefício 2",
+            composicao="Composição do produto",
+            contraindicacao="Contraindicação do produto",
+            modo_uso="Modo de uso do produto",
+            ativo=False
+        )
+    
+    def test_listagem_so_retorna_ativos(self):
+        """Testa se a listagem de produtos só retorna produtos ativos"""
+        url = reverse('produtos:produtos_categoria', args=[self.categoria.slug])
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.produto_ativo, response.context['produtos'])
+        self.assertNotIn(self.produto_inativo, response.context['produtos'])
+    
+    def test_detalhe_produto_inativo_404(self):
+        """Testa se tentar acessar detalhe de produto inativo retorna 404"""
+        url = reverse('produtos:detalhe_produto', args=[self.categoria.slug, self.produto_inativo.id])
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 404)
+    
+    def test_detalhe_produto_ativo_200(self):
+        """Testa se acessar detalhe de produto ativo retorna 200"""
+        url = reverse('produtos:detalhe_produto', args=[self.categoria.slug, self.produto_ativo.id])
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['produto'], self.produto_ativo)
+    
+    def test_busca_so_retorna_ativos(self):
+        """Testa se a busca só retorna produtos ativos"""
+        url = reverse('produtos:buscar_produtos')
+        response = self.client.get(url, {'q': 'Produto'})
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.produto_ativo, response.context['produtos'])
+        self.assertNotIn(self.produto_inativo, response.context['produtos'])
+    
+    def test_home_so_retorna_destaques_ativos(self):
+        """Testa se a página inicial só retorna produtos em destaque que estão ativos"""
+        # Marcar produto inativo como destaque
+        self.produto_inativo.destaque = True
+        self.produto_inativo.save()
+        
+        # Marcar produto ativo como destaque também
+        self.produto_ativo.destaque = True
+        self.produto_ativo.save()
+        
+        response = self.client.get(reverse('produtos:home'))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.produto_ativo, response.context['produtos_destaque'])
+        self.assertNotIn(self.produto_inativo, response.context['produtos_destaque'])
+    
+    def test_produtos_relacionados_so_ativos(self):
+        """Testa se produtos relacionados só incluem produtos ativos"""
+        # Criar outro produto ativo na mesma categoria
+        produto_relacionado = Produto.objects.create(
+            categoria=self.categoria,
+            nome="Produto Relacionado",
+            link_compra="https://exemplo3.com",
+            descricao="Descrição do produto relacionado",
+            beneficios="Benefício 1\nBenefício 2",
+            composicao="Composição do produto",
+            contraindicacao="Contraindicação do produto",
+            modo_uso="Modo de uso do produto",
+            ativo=True
+        )
+        
+        url = reverse('produtos:detalhe_produto', args=[self.categoria.slug, self.produto_ativo.id])
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(produto_relacionado, response.context['produtos_relacionados'])
+        self.assertNotIn(self.produto_inativo, response.context['produtos_relacionados'])
+    
+    def test_redirecionar_compra_produto_inativo_404(self):
+        """Testa se tentar redirecionar compra de produto inativo retorna 404"""
+        url = reverse('produtos:redirecionar_compra', args=[self.categoria.slug, self.produto_inativo.id])
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 404)

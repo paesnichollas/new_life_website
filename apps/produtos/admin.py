@@ -24,7 +24,20 @@ class CategoriaAdmin(admin.ModelAdmin):
 
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'categoria', 'destaque', 'lancamento', 'mais_vendido']
-    list_filter = ['categoria', 'destaque', 'lancamento', 'mais_vendido']
+    list_display = ['nome', 'categoria', 'destaque', 'lancamento', 'mais_vendido', 'ativo']
+    list_filter = ['ativo', 'categoria', 'destaque', 'lancamento', 'mais_vendido']
     search_fields = ['nome', 'descricao', 'link_compra']
-    list_editable = ['destaque', 'lancamento', 'mais_vendido']
+    list_editable = ['ativo', 'destaque', 'lancamento', 'mais_vendido']
+    ordering = ('-id',)
+    
+    @admin.action(description="Ativar selecionados")
+    def ativar(self, request, queryset):
+        updated = queryset.update(ativo=True)
+        self.message_user(request, f"{updated} produto(s) ativado(s) com sucesso.")
+    
+    @admin.action(description="Desativar selecionados")
+    def desativar(self, request, queryset):
+        updated = queryset.update(ativo=False)
+        self.message_user(request, f"{updated} produto(s) desativado(s) com sucesso.")
+    
+    actions = ['ativar', 'desativar']

@@ -83,6 +83,7 @@ class Produto(models.Model):
     destaque = models.BooleanField(default=False, help_text="Marcar para exibir na página inicial")
     lancamento = models.BooleanField(default=False, help_text="Marcar como produto lançamento")
     mais_vendido = models.BooleanField(default=False, help_text="Marcar como produto mais vendido")
+    ativo = models.BooleanField("Disponível", default=True, db_index=True, help_text="Marcar se o produto está disponível para exibição")
     
     def __str__(self):
         return self.nome

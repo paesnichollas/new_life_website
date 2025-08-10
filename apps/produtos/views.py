@@ -6,7 +6,7 @@ from apps.usuarios.models import Depoimento
 def home(request):
     """Página inicial com categorias e produtos em destaque"""
     categorias_principais = Categoria.objects.filter(categoria_pai__isnull=True)
-    produtos_destaque = Produto.objects.filter(destaque=True)[:6]
+    produtos_destaque = Produto.objects.filter(destaque=True, ativo=True)[:6]
     depoimentos = Depoimento.objects.filter(ativo=True)[:3]
     
     context = {
@@ -20,7 +20,7 @@ def home(request):
 def produtos_por_categoria(request, categoria_slug):
     """Lista produtos de uma categoria específica"""
     categoria = get_object_or_404(Categoria, slug=categoria_slug)
-    produtos = Produto.objects.filter(categoria=categoria)
+    produtos = Produto.objects.filter(categoria=categoria, ativo=True)
     
     context = {
         'categoria': categoria,
@@ -42,8 +42,8 @@ def categoria_subcategorias(request, categoria_slug):
 def detalhe_produto(request, categoria_slug, produto_id):
     """Detalhe de um produto específico"""
     categoria = get_object_or_404(Categoria, slug=categoria_slug)
-    produto = get_object_or_404(Produto, id=produto_id, categoria=categoria)
-    produtos_relacionados = Produto.objects.filter(categoria=categoria).exclude(id=produto_id)[:3]
+    produto = get_object_or_404(Produto, id=produto_id, categoria=categoria, ativo=True)
+    produtos_relacionados = Produto.objects.filter(categoria=categoria, ativo=True).exclude(id=produto_id)[:3]
     
     context = {
         'produto': produto,
@@ -57,9 +57,9 @@ def buscar_produtos(request):
     query_string = request.GET.get("q")
     print(f"Query String: {query_string}")
     if query_string:
-        produtos = Produto.objects.filter(nome__icontains=query_string)
+        produtos = Produto.objects.filter(nome__icontains=query_string, ativo=True)
     else:
-        produtos = Produto.objects.all()
+        produtos = Produto.objects.filter(ativo=True)
     print(f"Produtos encontrados: {produtos.count()}")
     context = {
         "produtos": produtos,
@@ -70,7 +70,7 @@ def buscar_produtos(request):
 
 def redirecionar_compra(request, categoria_slug, produto_id):
     """Redireciona para a loja do consultor e depois para a página do produto"""
-    produto = get_object_or_404(Produto, id=produto_id)
+    produto = get_object_or_404(Produto, id=produto_id, ativo=True)
     
     # URL da loja do consultor
     loja_consultor = "https://loja.newlifeoficial.com/nichollaspaes"
